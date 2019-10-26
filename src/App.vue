@@ -1,11 +1,11 @@
 <template>
-  <div id="app">
+  <div id="app" v-cloak>
       <div class="layout">
           <Layout>
               <Header>
                   <NavMenu/>
               </Header>
-              <Content :style="{padding: '0 50px'}">
+              <Content :style="{padding: '60px 100px'}">
                   <router-view></router-view>
               </Content>
           </Layout>
@@ -19,6 +19,11 @@ import NavMenu from './components/NavMenu.vue'
 
 export default {
   name: 'app',
+    data(){
+      return {
+
+      }
+    },
   components: {
       NavMenu
   }
@@ -26,6 +31,9 @@ export default {
 </script>
 
 <style>
+[v-cloak]{
+    display: none;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
