@@ -5,18 +5,20 @@
             <Button type="info" ghost>批量管理</Button>
         </ButtonGroup>
         <Modal
+                ref="modal"
                 footer-hide
                 title="上传图片"
                 v-model="modal"
                 class-name="vertical-center-modal"
                 width="800"
+                @on-cancel="handleCloseModal"
         >
             <div slot="header">
                 <div class="modal-header">
                     <p>上传到</p>
                     <Select v-model="select" style="width:250px;">
                         <List>
-                            <ListItem v-for="item in cateList" :key="item.id">
+                            <ListItem v-for="item in picList" :key="item.id">
                                 <Option :value="item.id" :label="item.title">
                                     <ListItemMeta :avatar="item.pic" :description="+item.len+'张'" :title="item.title">
                                         {{item.title}}
@@ -37,7 +39,7 @@
                     </li>
                     <li class="demo-upload-list upload-btn" v-if="files.length<5">
                         <Upload
-                                ref="upload"
+                                ref="file"
                                 v-model="files"
                                 :on-success="handleSuccess"
                                 :format="['jpg','jpeg','png']"
@@ -66,7 +68,7 @@
                 </div>
             </div>
             <Upload
-                    ref="upload"
+                    ref="file"
                     v-model="files"
                     :on-success="handleSuccess"
                     :format="['jpg','jpeg','png']"
@@ -90,8 +92,7 @@
 <script>
 import {baseUrl} from '../api/baseUrl'
 import {store} from '../store'
-// import {getPicList} from "../store/mutations";
-// import {lastState} from '../store/config'
+import {mapState, mapMutations} from 'vuex'
 
 export default {
     name: 'uploadPic',
@@ -101,28 +102,16 @@ export default {
             modal: false,
             select: null,
             files: [],
-            cateList: [],
             successList: [],
             imageUrl: "",
-            defaultList: [
-                {
-                    'name': 'a42bdcc1178e62b4694c830f028db5c0',
-                    'url': 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
-                },
-                {
-                    'name': 'bc7521e033abdd1e92222d733590f104',
-                    'url': 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar'
-                }
-            ],
-            imgName: '',
-            visible: false,
-            uploadList: [{
-                'name': 'a42bdcc1178e62b4694c830f028db5c0',
-                'url': 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
-            },]
+            visible: false
         }
     },
+    computed:{
+        ...mapState(['picList'])
+    },
     methods: {
+        ...mapMutations(['getPicList']),
         /**
          * 上传格式化错误
          * */
@@ -151,10 +140,10 @@ export default {
          * 上传格式化错误
          * */
         handleBeforeUpload (file) {
-            const check = this.uploadList.length < 5;
+            const check = this.files.length < 5;
             if (!check) {
                 this.$Notice.warning({
-                    title: 'Up to five pictures can be uploaded.'
+                    title: '每次最多上传5张图片.'
                 });
             }
             // blob生成预览图
@@ -171,8 +160,31 @@ export default {
         handleOpenModal(){
             this.modal = true;
             const id = this.$route.params.id
-            this.cateList = store.state.picList
             this.select = parseInt(id)
+        },
+        /**
+         * 关闭模态框
+         * */
+        handleCloseModal(){
+            this.$refs.modal.visible = true;
+            this.modal = true;
+            if (this.files.length) {
+                this.$Modal.confirm({
+                    title: "是否终止本次上传？",
+                    content: '<p>点击确定将终止</p>',
+                    loading: true,
+                    onOk: () => {
+                        setTimeout(() => {
+                            this.$Modal.remove();
+                            this.modal = false;
+                            this.files = [];
+                            this.successList = [];
+                        }, 2000)
+                    }
+                })
+            }
+            else this.modal = false
+
         },
         /**
          * 上传提交
@@ -189,15 +201,19 @@ export default {
         handleSuccess(res, file){
             if (res.code === 0){
                 this.successList.push(file);
+                // 由于iview上传是map显示提交，会触发多次success
+                // 判断提交图片和成功上传图片长度是否一致
                 if (this.successList.length === this.files.length){
                     this.$Message.success("上传成功");
                     this.files = [];
                     this.successList = [];
                     store.commit('getPicList');
-                    this.cateList = store.state.picList
                 }
             }
         },
+    },
+    mounted(){
+        this.getPicList()
     }
 }
 </script>
