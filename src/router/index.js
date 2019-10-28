@@ -6,6 +6,8 @@ import Setting from '../containers/Setting'
 import Home from '../containers/HomePage'
 import Login from '../components/Login'
 import PicCategory from '../containers/picManage/PicCategory'
+// import {store} from '../store'
+// import {lastState} from '../store/config'
 
 const routers = [
     {path: '/', name:'home', component: Home},
@@ -21,3 +23,10 @@ export const router = new Router({
     mode: 'history',
     routes: routers
 });
+
+// router.beforeEach((to, from, next) => {
+//     const data = lastState;
+//     window.console.log(data);
+//     if (data) store.commit('setState', data)
+//     next()
+// })

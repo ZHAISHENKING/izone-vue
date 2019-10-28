@@ -1,7 +1,7 @@
 <template>
     <List item-layout="vertical">
         <ListItem v-for="(item, index) in picList" :key="index">
-            <CategoryDesc :item="item"/>
+            <CategoryDesc :item="item" @edit="getPicList" />
             <Row  :gutter="16" class="code-row-bg">
                 <i-col span="6" style="margin-top:5px">
                     <Card class="float" :to="{name:'pic_cate',params:{id:item.id}}">
@@ -17,8 +17,7 @@
 </template>
 
 <script>
-    import {get_category} from "../api";
-    import {store} from '../store'
+    import {mapMutations, mapState} from 'vuex'
     import CategoryDesc from '../components/CategoryDesc'
     export default {
         name: "pic",
@@ -26,42 +25,15 @@
             CategoryDesc
         },
         props: ['item'],
-        data(){
-            return {
-                picList: [
-                    // {
-                    //     'id':1,"title": "我的最爱","desc": "记录我的最爱",
-                    //     "pic": "/img/logo.82b9c7a5.png"
-                    // },
-                ],
-                logo: "/img/logo.82b9c7a5.png"
-            }
+
+        computed:{
+            ...mapState(['picList'])
+        },
+        methods:{
+            ...mapMutations(["getPicList"])
         },
         created(){
-            get_category({}).then((data)=>{
-                let all = data.data;
-                if(all.code === 0 && all.data){
-                    let arr = [];
-                    all.data.map((item) => {
-                        // 接口数据解析，默认缩略图pic展示分类下第一张图片
-                        let pic = JSON.stringify(item.pic)
-                        // 分类下没有图片展示默认图
-                        if (pic == '[]') pic = this.logo
-                        else pic = item.pic[0].image_url
-                        let obj = {
-                            id: item.id,
-                            title: item.title,
-                            desc: item.desc,
-                            pic: pic,
-                            len: item.pic.length
-                        }
-                        arr.push(obj)
-                    })
-                    this.picList = arr
-                    store.commit('setPicList', this.picList)
-                }
-
-            })
+            this.getPicList()
         },
     }
 

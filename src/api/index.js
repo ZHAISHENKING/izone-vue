@@ -4,7 +4,10 @@ import {baseRequest} from "./baseRequest";
 export let get_category = function get_category(params){
     return baseRequest("GET", '/category/all/', params, '');
 };
-
+// 修改分类title
+export let put_cate = params => {
+    return baseRequest('POST', '/put/cate', '', params)
+}
 // 获取视频
 export let get_all_video = function get_all_video(params){
     return baseRequest("GET", '/video/all/', params, '');

@@ -1,10 +1,5 @@
 <template>
     <div class="ivu-list-item-meta">
-        <!--<div class="ivu-list-item-meta-avatar">-->
-            <!--<div class="ivu-avatar ivu-avatar-circle ivu-avatar-image ivu-avatar-default">-->
-                <!--<img src="../assets/logo.png" alt="">-->
-            <!--</div>-->
-        <!--</div>-->
         <div style="text-align:left">
             <div class="ivu-list-item-meta-title">
                 <h3 v-if="show">
@@ -20,6 +15,8 @@
 </template>
 
 <script>
+    import {put_cate} from "../api";
+
     export default {
         name: 'CategoryDesc',
         props: ['item'],
@@ -31,7 +28,14 @@
         methods:{
             editTitle(){
                 this.show=true;
-                this.$Message.success('修改成功');
+                put_cate({id: this.item.id, title: this.item.title}).then(data=>{
+                    const _ = data.data;
+                    if (_.code ===0){
+                        this.$Message.success('修改成功');
+                        this.$emit('edit')
+                    }
+                    else this.$Message.error('修改失败');
+                })
             }
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <CategoryDesc :item="items">
+        <CategoryDesc :item="items" @edit="getPicList">
             <div slot="desc" class="desc">
                 <UploadPic></UploadPic>
             </div>
@@ -20,6 +20,7 @@
     import {get_img} from "../../api";
     import CategoryDesc from '../../components/CategoryDesc'
     import UploadPic from '../../components/UploadPic.vue';
+    import {mapMutations} from 'vuex'
     export default {
         name: 'pic_cate',
         components: {
@@ -34,6 +35,9 @@
                     {"url":'/img/logo.82b9c7a5.png', 'date': "2017-9-12"}
                 ]
             }
+        },
+        methods:{
+            ...mapMutations(["getPicList"])
         },
         created(){
             let id = this.$route.params.id

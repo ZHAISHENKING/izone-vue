@@ -83,16 +83,15 @@
                     <p>上传图片</p>
                 </Button>
             </Upload>
-
         </Modal>
-
     </div>
 </template>
 
 <script>
 import {baseUrl} from '../api/baseUrl'
 import {store} from '../store'
-import {lastState} from '../store/config'
+// import {getPicList} from "../store/mutations";
+// import {lastState} from '../store/config'
 
 export default {
     name: 'uploadPic',
@@ -100,9 +99,10 @@ export default {
         return {
             baseUrl: baseUrl + '/upload/img',
             modal: false,
-            select: {id:1, label:"我"},
+            select: null,
             files: [],
             cateList: [],
+            successList: [],
             imageUrl: "",
             defaultList: [
                 {
@@ -123,34 +123,33 @@ export default {
         }
     },
     methods: {
-        handleSuccess(res){
-            if (res.code === 0){
-                this.$Message.success("上传成功");
-                this.files = [];
-            }else{
-                // 上传失败
-                window.console.log(res.msg);
-                this.$Notice.error({
-                    title: "上传失败",
-                    desc: res.msg
-                })
-            }
-        },
+        /**
+         * 上传格式化错误
+         * */
         handleFormatError (file) {
             this.$Notice.warning({
                 title: 'The file format is incorrect',
                 desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
             });
         },
+        /**
+         * 上传大小超出
+         * */
         handleMaxSize (file) {
             this.$Notice.warning({
                 title: 'Exceeding file size limit',
                 desc: 'File  ' + file.name + ' is too large, no more than 2M.'
             });
         },
+        /**
+         * 移除图片
+         * */
         handleRemove(file){
           this.files.splice(this.files.indexOf(file), 1)
         },
+        /**
+         * 上传格式化错误
+         * */
         handleBeforeUpload (file) {
             const check = this.uploadList.length < 5;
             if (!check) {
@@ -166,24 +165,39 @@ export default {
             }
             return false;
         },
+        /**
+         * 开启模态框
+         * */
         handleOpenModal(){
             this.modal = true;
             const id = this.$route.params.id
-            this.cateList = [{id: id}]
-            this.select = id
-            if(lastState) this.cateList = lastState.picList
-            else this.cateList = store.state.picList
+            this.cateList = store.state.picList
+            this.select = parseInt(id)
         },
         /**
-         * 上传逻辑
+         * 上传提交
          * */
         handleUpload(){
             this.files.map((item)=>{
                 this.$refs.upload.data = {id: this.select}
                 this.$refs.upload.post(item)
             })
-        }
-
+        },
+        /**
+         * 上传成功
+         * */
+        handleSuccess(res, file){
+            if (res.code === 0){
+                this.successList.push(file);
+                if (this.successList.length === this.files.length){
+                    this.$Message.success("上传成功");
+                    this.files = [];
+                    this.successList = [];
+                    store.commit('getPicList');
+                    this.cateList = store.state.picList
+                }
+            }
+        },
     }
 }
 </script>
