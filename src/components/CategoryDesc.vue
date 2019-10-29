@@ -28,14 +28,14 @@
         methods:{
             editTitle(){
                 this.show=true;
-                put_cate({id: this.item.id, title: this.item.title}).then(data=>{
-                    const _ = data.data;
-                    if (_.code ===0){
+                put_cate(
+                    {id: this.item.id, title: this.item.title},
+                    () => {
                         this.$Message.success('修改成功');
                         this.$emit('edit')
-                    }
-                    else this.$Message.error('修改失败');
-                })
+                    },
+                    () => {this.$Message.error('修改失败')}
+                )
             }
         }
     }

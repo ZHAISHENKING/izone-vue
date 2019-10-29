@@ -1,6 +1,6 @@
 <template>
     <List item-layout="vertical">
-        <ListItem v-for="(item, index) in picList" :key="index">
+        <ListItem v-for="(item, index) in cateList" :key="index">
             <CategoryDesc :item="item" @edit="getPicList" />
             <Row  :gutter="16" class="code-row-bg">
                 <i-col span="6" style="margin-top:5px">
@@ -19,18 +19,48 @@
 <script>
     import {mapMutations, mapState} from 'vuex'
     import CategoryDesc from '../components/CategoryDesc'
+    import {get_category} from "../api";
+
     export default {
         name: "pic",
         components:{
             CategoryDesc
         },
         props: ['item'],
-
-        computed:{
-            ...mapState(['picList'])
+        data(){
+            return {
+                logo : "/img/logo.82b9c7a5.png",
+            }
+        },
+        computed: {
+            ...mapState(['cateList', 'picList'])
         },
         methods:{
-            ...mapMutations(["getPicList"])
+            ...mapMutations(['SET_PIC_LIST', 'CATE_LIST']),
+            getPicList(){
+                get_category({},
+                    (data) => {
+                        let arr = [];
+                        data.data.map((item) => {
+                            // 接口数据解析，默认缩略图pic展示分类下第一张图片
+                            let pic = JSON.stringify(item.pic)
+                            // 分类下没有图片展示默认图
+                            if (pic === '[]') pic = this.logo
+                            else pic = item.pic[0].image_url
+                            let obj = {
+                                id: item.id,
+                                title: item.title,
+                                desc: item.desc,
+                                pic: pic,
+                                len: item.pic.length
+                            }
+                            arr.push(obj)
+                        })
+                        this.CATE_LIST(arr)
+                        this.SET_PIC_LIST(data.data)
+                    }
+                )
+            }
         },
         created(){
             this.getPicList()

@@ -1,23 +1,36 @@
 <template>
     <div>
-        <CategoryDesc :item="items" @edit="getPicList">
+        <CategoryDesc :item="items" @edit="INIT_PIC_LIST">
             <div slot="desc" class="desc">
                 <UploadPic></UploadPic>
             </div>
         </CategoryDesc>
-        <Row :gutter="16" class="code-row-bg" justify="start" type="flex" style="min-height:300px;">
-            <i-col span="4" v-for="(item, index) in img_list" :key="index" >
-                <Card class="card">
-                    <img :src="item.image_url" :alt="item.desc" style="width:100%; height:100px;">
-                    <p class="ivu-divider-with-text-center center">{{item.desc}}</p>
-                </Card>
-            </i-col>
-        </Row>
+        <CheckboxGroup v-model="box">
+            <div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
+                <Checkbox
+                    :indeterminate="indeterminate"
+                    :value="checkAll"
+                    @click.prevent.native="handleCheckAll">
+                    全选
+                </Checkbox>
+                <Button @click="handleDelete">删除</Button>
+            </div>
+            <Row :gutter="16" class="code-row-bg" justify="start" type="flex" style="min-height:300px;">
+                <i-col span="4" v-for="(item, index) in img_list" :key="index" >
+                    <Card class="card">
+                        <img :src="item.image_url" :alt="item.desc" style="width:100%; height:100px;">
+                        <p class="ivu-divider-with-text-center center">{{item.desc}}</p>
+                    </Card>
+                    <Checkbox border :label="item.id">
+                    </Checkbox>
+                </i-col>
+            </Row>
+        </CheckboxGroup>
     </div>
 </template>
 
 <script>
-    import {get_img} from "../../api";
+    import {get_img, delete_img} from "../../api";
     import CategoryDesc from '../../components/CategoryDesc'
     import UploadPic from '../../components/UploadPic.vue';
     import {mapMutations} from 'vuex'
@@ -33,21 +46,48 @@
                 img_list: [
                     {"url":'/img/logo.82b9c7a5.png', 'date': "2017-9-12"},
                     {"url":'/img/logo.82b9c7a5.png', 'date': "2017-9-12"}
-                ]
+                ],
+                box: [],
+                checkAll: false,
+                indeterminate: true
             }
         },
         methods:{
-            ...mapMutations(["getPicList"])
+            ...mapMutations(["INIT_PIC_LIST"]),
+            handleCheckAll () {
+                if (this.indeterminate) {
+                    this.checkAll = false;
+                } else {
+                    this.checkAll = !this.checkAll;
+                }
+                this.indeterminate = false;
+
+                if (this.checkAll) {
+                    this.box = this.img_list.map(o=>o.id);
+                } else {
+                    this.box = [];
+                }
+            },
+            handleDelete(){
+                delete_img(
+                    {ids: this.box.toString()},
+                    () => {
+                        this.$Message.success("删除成功")
+                        this.INIT_PIC_LIST()
+                    },
+                    () => {this.$Message.success("删除失败")}
+                )
+            }
         },
         created(){
             let id = this.$route.params.id
-            get_img({id}).then((data)=>{
-                let _ = data.data;
-                if (_.code === 0 && _.data){
-                    this.items = _.data
-                    this.img_list = _.data.pic
+            get_img(
+                {id},
+                res => {
+                    this.items = res.data;
+                    this.img_list = res.data.pic
                 }
-            })
+            )
         }
     }
 </script>

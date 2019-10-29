@@ -18,7 +18,7 @@
                     <p>上传到</p>
                     <Select v-model="select" style="width:250px;">
                         <List>
-                            <ListItem v-for="item in picList" :key="item.id">
+                            <ListItem v-for="item in cateList" :key="item.id">
                                 <Option :value="item.id" :label="item.title">
                                     <ListItemMeta :avatar="item.pic" :description="+item.len+'张'" :title="item.title">
                                         {{item.title}}
@@ -57,13 +57,9 @@
                 <div class="demo-upload-btn">
                     <ButtonGroup>
                         <Button type="primary" ghost
-                                v-show="!$refs.upload || !$refs.upload.active"
+                                v-show="!$refs.file || !$refs.file.active"
                                 @click="handleUpload"
                         >开始上传</Button>
-                        <Button type="default"
-                                v-show="$refs.upload && $refs.upload.active"
-                                @click.prevent="$refs.upload.active = false"
-                        >取消上传</Button>
                     </ButtonGroup>
                 </div>
             </div>
@@ -91,7 +87,6 @@
 
 <script>
 import {baseUrl} from '../api/baseUrl'
-import {store} from '../store'
 import {mapState, mapMutations} from 'vuex'
 
 export default {
@@ -108,10 +103,10 @@ export default {
         }
     },
     computed:{
-        ...mapState(['picList'])
+        ...mapState(['cateList'])
     },
     methods: {
-        ...mapMutations(['getPicList']),
+        ...mapMutations(['INIT_PIC_LIST', 'SET_PIC_LIST']),
         /**
          * 上传格式化错误
          * */
@@ -191,8 +186,8 @@ export default {
          * */
         handleUpload(){
             this.files.map((item)=>{
-                this.$refs.upload.data = {id: this.select}
-                this.$refs.upload.post(item)
+                this.$refs.file.data = {id: this.select}
+                this.$refs.file.post(item)
             })
         },
         /**
@@ -207,13 +202,13 @@ export default {
                     this.$Message.success("上传成功");
                     this.files = [];
                     this.successList = [];
-                    store.commit('getPicList');
+                    this.INIT_PIC_LIST()
                 }
             }
         },
     },
     mounted(){
-        this.getPicList()
+        this.INIT_PIC_LIST()
     }
 }
 </script>

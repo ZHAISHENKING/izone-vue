@@ -1,29 +1,24 @@
-import {get_category} from  '../api'
-/**
- * 获取图片分类列表
-* */
-export const getPicList = (state)=>{
-    get_category({}).then(data => {
-        let arr = [];
-        let all = data.data;
-        if (all.code===0 && all.data){
-            all.data.map((item) => {
-                // 接口数据解析，默认缩略图pic展示分类下第一张图片
-                let pic = JSON.stringify(item.pic)
-                // 分类下没有图片展示默认图
-                if (pic == '[]') pic = this.logo
-                else pic = item.pic[0].image_url
-                let obj = {
-                    id: item.id,
-                    title: item.title,
-                    desc: item.desc,
-                    pic: pic,
-                    len: item.pic.length
-                }
-                arr.push(obj)
-            })
-        }
-        state.picList = arr
-    })
-    window.console.log("全部上传成功， mutaitons开始执行")
+import {getStore, setStore} from "../util";
+import {
+    INIT_PIC_LIST,
+    SET_PIC_LIST,
+    CATE_LIST
+} from "./mutations-type";
+
+export default {
+    // 图片列表
+    [SET_PIC_LIST](state, list){
+        state.picList = list
+        setStore('picList', state.picList)
+    },
+    // 初始化图片列表
+    [INIT_PIC_LIST](state){
+        state.picList = JSON.parse(getStore('picList'))
+        state.cateList = JSON.parse(getStore('cateList'))
+    },
+    // 图片分类列表
+    [CATE_LIST](state, list){
+        state.cateList = list
+        setStore('cateList', state.cateList)
+    }
 }
