@@ -7,8 +7,8 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
-        picList: [],
-        cateList: [],
+        picList: [],  // 图片列表
+        cateList: [], // 分类列表
     },
     plugins: [myPlugin],
     mutations: mutations,

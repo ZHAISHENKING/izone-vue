@@ -2,7 +2,7 @@ import {getStore, setStore} from "../util";
 import {
     INIT_PIC_LIST,
     SET_PIC_LIST,
-    CATE_LIST
+    CATE_LIST,
 } from "./mutations-type";
 
 export default {
@@ -20,5 +20,6 @@ export default {
     [CATE_LIST](state, list){
         state.cateList = list
         setStore('cateList', state.cateList)
-    }
+    },
+
 }

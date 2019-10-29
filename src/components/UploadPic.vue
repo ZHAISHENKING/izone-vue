@@ -2,7 +2,7 @@
     <div>
         <ButtonGroup style="margin-left: 10px">
             <Button type="info" ghost @click="handleOpenModal">上传图片</Button>
-            <Button type="info" ghost>批量管理</Button>
+            <Button type="info" ghost @click="$emit('check')">批量管理</Button>
         </ButtonGroup>
         <Modal
                 ref="modal"
@@ -87,7 +87,7 @@
 
 <script>
 import {baseUrl} from '../api/baseUrl'
-import {mapState, mapMutations} from 'vuex'
+import {mapState, mapMutations, mapActions} from 'vuex'
 
 export default {
     name: 'uploadPic',
@@ -106,6 +106,7 @@ export default {
         ...mapState(['cateList'])
     },
     methods: {
+        ...mapActions(['GET_CATE']),
         ...mapMutations(['INIT_PIC_LIST', 'SET_PIC_LIST']),
         /**
          * 上传格式化错误
@@ -203,6 +204,8 @@ export default {
                     this.files = [];
                     this.successList = [];
                     this.INIT_PIC_LIST()
+                    this.$emit('change')
+                    this.GET_CATE()
                 }
             }
         },
