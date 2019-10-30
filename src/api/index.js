@@ -1,17 +1,22 @@
 import {baseRequest} from "./baseRequest";
 
-// 获取图片分类
-export let get_category = (params, resolve, inject) => {
+// 获取相册
+export let get_album = (params, resolve, inject) => {
     return baseRequest("GET", '/category/all/', params, resolve, inject);
 };
-// 修改分类title
-export let put_cate = (params, resolve, inject) => {
+// 修改相册title
+export let put_album = (params, resolve, inject) => {
     return baseRequest('POST', '/put/cate', params, resolve, inject)
 }
 // 获取视频
 export let get_all_video = (params, resolve, inject) => {
     return baseRequest("GET", '/video/all/', params, resolve, inject);
 };
+
+// 创建相册
+export const create_album = (params, resolve, inject) => {
+    return baseRequest("POST", '/album', params, resolve, inject);
+}
 
 // 获取所有图片
 export let get_all_img = (params, resolve, inject) => {

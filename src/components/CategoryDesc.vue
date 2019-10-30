@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import {put_cate} from "../api";
+    import {put_album} from "../api";
 
     export default {
         name: 'CategoryDesc',
@@ -28,7 +28,7 @@
         methods:{
             editTitle(){
                 this.show=true;
-                put_cate(
+                put_album(
                     {id: this.item.id, title: this.item.title},
                     () => {
                         this.$Message.success('修改成功');

@@ -1,35 +1,48 @@
 <template>
-    <List item-layout="vertical">
-        <ListItem v-for="(item, index) in cateList" :key="index">
-            <CategoryDesc :item="item" @edit="getPicList" />
-            <Row  :gutter="16" class="code-row-bg">
-                <i-col span="6" style="margin-top:5px">
-                    <Card class="float" :to="{name:'pic_cate',params:{id:item.id}}">
-                        <div style="text-align:center">
-                            <img :src="item.pic" style="width: 150px; height: 150px;"/>
-                        </div>
-                        <p class="abs">{{item.len}}</p>
-                    </Card>
-                </i-col>
-            </Row>
-        </ListItem>
-    </List>
+    <div>
+        <Button @click="modal=true">
+            创建相册
+        </Button>
+        <List item-layout="vertical" v-if="cateList.length">
+            <ListItem v-for="(item, index) in cateList" :key="index">
+                <CategoryDesc :item="item" @edit="getPicList" />
+                <Row  :gutter="16" class="code-row-bg">
+                    <i-col span="6" style="margin-top:5px">
+                        <Card class="float" :to="{name:'pic_cate',params:{id:item.id}}">
+                            <div style="text-align:center">
+                                <img :src="item.pic" style="width: 150px; height: 150px;"/>
+                            </div>
+                            <p class="abs">{{item.len}}</p>
+                        </Card>
+                    </i-col>
+                </Row>
+            </ListItem>
+        </List>
+        <List v-else>
+            <p>暂无相册，开始创建吧</p>
+        </List>
+        <Modal v-model="modal" title="创建相册">
+            <CreateAlbum @close="modal=false">
+            </CreateAlbum>
+        </Modal>
+    </div>
 </template>
 
 <script>
     import {mapMutations, mapState} from 'vuex'
     import CategoryDesc from '../components/CategoryDesc'
-    import {get_category} from "../api";
+    import {get_album} from "../api";
+    import CreateAlbum from '../components/CreateAlbum'
 
     export default {
         name: "pic",
         components:{
-            CategoryDesc
+            CategoryDesc, CreateAlbum
         },
-        props: ['item'],
         data(){
             return {
                 logo : "/img/logo.82b9c7a5.png",
+                modal: false
             }
         },
         computed: {
@@ -38,20 +51,15 @@
         methods:{
             ...mapMutations(['SET_PIC_LIST', 'CATE_LIST']),
             getPicList(){
-                get_category({},
+                get_album({},
                     (data) => {
                         let arr = [];
                         data.data.map((item) => {
-                            // 接口数据解析，默认缩略图pic展示分类下第一张图片
-                            let pic = JSON.stringify(item.pic)
-                            // 分类下没有图片展示默认图
-                            if (pic === '[]') pic = this.logo
-                            else pic = item.pic[0].image_url
                             let obj = {
                                 id: item.id,
                                 title: item.title,
                                 desc: item.desc,
-                                pic: pic,
+                                pic: item.cover || this.logo,
                                 len: item.pic.length
                             }
                             arr.push(obj)
@@ -60,6 +68,9 @@
                         this.SET_PIC_LIST(data.data)
                     }
                 )
+            },
+            closeModal(){
+                this.modal = false
             }
         },
         created(){
