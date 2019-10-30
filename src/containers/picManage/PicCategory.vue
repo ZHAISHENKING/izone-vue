@@ -17,6 +17,7 @@
                 <Button @click="handleDelete">删除</Button>
                 <Button @click="is_check=false">取消管理</Button>
             </div>
+            <viewer :images="img_list">
             <Row :gutter="16" class="code-row-bg" justify="start" type="flex" style="min-height:300px;">
                 <i-col span="4" v-for="(item, index) in img_list" :key="index" >
                     <Card class="card">
@@ -27,6 +28,7 @@
                     </Checkbox>
                 </i-col>
             </Row>
+            </viewer>
         </CheckboxGroup>
     </div>
 </template>
