@@ -1,12 +1,14 @@
 import Vue from 'vue'
-import {store} from './store'
+import {store} from './store/index'
 import App from './App.vue'
 import ViewUI from 'view-design'
 import 'view-design/dist/styles/iview.css';
 import 'viewerjs/dist/viewer.css'
 import Router from 'vue-router'
-import {router} from './router/index'
+import {router} from './router'
 import VueViewer from 'v-viewer'
+import {auth} from './api'
+import store2 from 'store2'
 
 VueViewer.setDefaults({
     toolbar: {
@@ -32,6 +34,19 @@ Vue.use(ViewUI);
 Vue.use(Router);
 Vue.use(VueViewer);
 Vue.config.productionTip = false
+
+router.beforeEach((to, from, next) => {
+    if (to.path === '/login') {
+        next();
+        return
+    }
+    let token = store2.get('token');
+    auth(
+        {token:token},
+        () => next(),
+        () => next('/login')
+    )
+});
 
 new Vue({
   router,

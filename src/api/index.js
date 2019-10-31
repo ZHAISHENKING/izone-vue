@@ -45,3 +45,8 @@ export let register = (params, resolve, inject) => {
 export let login = (params, resolve, inject) => {
     return baseRequest("POST", '/user/login/', params, resolve, inject)
 };
+
+// 登录鉴权
+export const auth = (params, resolve, inject) => {
+    return baseRequest("POST", '/user/auth/', params, resolve, inject)
+}

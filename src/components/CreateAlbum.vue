@@ -1,13 +1,12 @@
 <template>
-    <Form :model="formItem" :label-width="100">
-        <FormItem label="相册名称：">
+    <Form :model="formItem" :label-width="100" :rules="ruleInline">
+        <FormItem label="相册名称：" prop="title">
             <i-input v-model="formItem.title"></i-input>
         </FormItem>
-        <FormItem label="相册描述：">
-            <i-input type="textarea" v-model="formItem.desc" placeholder="说说这个相册的故事... (非必填)"
-                     :autosize="{minRows: 2,maxRows: 5}"></i-input>
+        <FormItem label="相册描述：" prop="desc">
+            <i-input type="textarea" v-model="formItem.desc" placeholder="说说这个相册的故事... (非必填)" :autosize="{minRows: 2,maxRows: 5}"></i-input>
         </FormItem>
-        <FormItem label="相册分类：" style="width:300px;">
+        <FormItem label="相册分类：" style="width:300px;" prop="cate">
             <i-select v-model="formItem.cate">
                 <Option v-for="cate in cates" :label="cate" :key="cate" :value="cate"></Option>
             </i-select>
@@ -32,13 +31,18 @@
                     title: '',
                     desc: '',
                     cate: '最爱',
+                },
+                ruleInline: {
+                    title: [
+                        { required: true, message: '请输入相册名称', trigger: 'blur' }
+                    ],
+
                 }
             }
         },
         methods:{
             ...mapActions(['GET_CATE']),
             submit(){
-                window.console.log('aaa')
                 create_album(
                     {...this.formItem},
                     () => {

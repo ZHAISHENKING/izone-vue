@@ -1,9 +1,12 @@
 <template>
     <div>
-        <Button @click="modal=true">
-            创建相册
-        </Button>
-        <List item-layout="vertical" v-if="cateList.length">
+        <List v-if="!cateList.length">
+            <p>暂无相册，开始创建吧</p>
+            <Button @click="modal=true">
+                创建相册
+            </Button>
+        </List>
+        <List item-layout="vertical" v-else>
             <ListItem v-for="(item, index) in cateList" :key="index">
                 <CategoryDesc :item="item" @edit="getPicList" />
                 <Row  :gutter="16" class="code-row-bg">
@@ -18,12 +21,10 @@
                 </Row>
             </ListItem>
         </List>
-        <List v-else>
-            <p>暂无相册，开始创建吧</p>
-        </List>
         <Modal v-model="modal" title="创建相册">
             <CreateAlbum @close="modal=false">
             </CreateAlbum>
+            <div slot="footer"></div>
         </Modal>
     </div>
 </template>

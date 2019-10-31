@@ -9,17 +9,7 @@
             <Icon type="ios-people" />
             视频
         </MenuItem>
-        <MenuItem name="3" to="/center">
-            <Icon type="ios-construct" />
-            个人中心
-        </MenuItem>
-        <MenuItem name="4" to="/setting">
-            <Icon type="ios-construct" />
-            设置
-        </MenuItem>
     </Menu>
-
-
 </template>
 
 <script>
