@@ -20,6 +20,7 @@ export function baseRequest(method, path, params, success, error) {
     }
     else if (method === 'POST') {
         axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+        axios.defaults.headers.post["jwt"] = window.localStorage.getItem('jwt');
         req = axios.post(path, qs.stringify(params));
     }
     thenResponse(req, success, error)
@@ -39,6 +40,7 @@ function thenResponse (axiosRequest, successCallback, errorCallback) {
                 if (successCallback) successCallback(res)
             } else {
                 if (errorCallback) errorCallback(res.code, res.msg)
+                else this.$Message.error(res.msg)
             }
         }
     }).catch((error) => {

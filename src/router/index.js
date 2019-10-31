@@ -9,17 +9,17 @@ import PicCategory from '../containers/picManage/PicCategory'
 
 
 const routers = [
-    {path: '/', name:'home', component: HomePage, redirect: '/login',
+    {path: '/', name:'home', component: HomePage,
         children:[
             {path: 'pic', component: Picture, name:'pic'},
             {path: 'video', name: 'video', component: Video},
             {path: 'center', name: 'center', component: Center},
             {path: 'setting', name: 'setting', component: Setting},
-            {path: 'pic/cate/:id', component: PicCategory, name:'pic_cate'}
+            {path: 'pic/cate/:id', component: PicCategory, name:'pic_cate'},
         ]
     },
     {path: '/login', name: 'login', component: Login},
-
+    // {path: '/register', name: 'register', }
 ];
 
 export const router = new Router({
