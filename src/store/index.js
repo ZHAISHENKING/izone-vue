@@ -9,6 +9,7 @@ export const store = new Vuex.Store({
     state: {
         picList: [],  // 图片列表
         cateList: [], // 分类列表
+        messages: [], // 消息列表
     },
     plugins: [myPlugin],
     mutations: mutations,

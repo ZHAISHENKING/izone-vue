@@ -22,13 +22,14 @@
                 <i-col span="4" v-for="(item, index) in img_list" :key="index" >
                     <Card class="card">
                         <img :src="item.image_url" :alt="item.desc" style="width:100%; height:100px;">
-                        <p class="ivu-divider-with-text-center center">{{item.desc}}</p>
+                        <p class="ivu-divider-with-text-center center">{{item.create_at}}</p>
                     </Card>
                     <Checkbox border :label="item.id" v-if="is_check">
                     </Checkbox>
                 </i-col>
             </Row>
             </viewer>
+            <Page :total="total" show-total on-change=""/>
         </CheckboxGroup>
     </div>
 </template>
@@ -42,6 +43,11 @@
         name: 'pic_cate',
         components: {
             CategoryDesc, UploadPic
+        },
+        computed:{
+            total(){
+                return this.img_list.length
+            }
         },
         props: ['item'],
         data(){

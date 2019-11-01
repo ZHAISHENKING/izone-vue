@@ -19,5 +19,11 @@ export default {
                 commit('SET_PIC_LIST', data.data)
             }
         )
+    },
+    SAVE_MESSAGE({commit}, msg){
+        commit('ADD_TO_MESSAGES', msg)
+    },
+    CLEAN_MESSAGES({commit}){
+        commit('CLEAN_MESSAGES')
     }
 }

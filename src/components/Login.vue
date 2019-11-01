@@ -14,7 +14,7 @@
                             <Icon type="ios-lock-outline" slot="prepend"></Icon>
                         </i-input>
                     </FormItem>
-                    <p @click="reg=true">没有账号？ 去注册</p>
+                    <a @click="reg=true">没有账号？ 去注册</a>
                     <FormItem>
                         <Button style="width:100%" @click="handleSubmit('formInline')">登录</Button>
                     </FormItem>
@@ -35,6 +35,7 @@
                             <Icon type="ios-lock-outline" slot="prepend"></Icon>
                         </i-input>
                     </FormItem>
+                    <a @click="reg=false">已有账号？ 去登录</a>
                     <FormItem>
                         <Button style="width:100%" @click="handleRegister('regForm')">注册</Button>
                     </FormItem>

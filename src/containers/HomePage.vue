@@ -5,7 +5,7 @@
                 <Header>
                     <NavMenu/>
                 </Header>
-                <Content :style="{padding: '60px 100px'}">
+                <Content style="padding: 60px 100px; min-height:550px;">
                     <router-view></router-view>
                 </Content>
             </Layout>
@@ -21,7 +21,6 @@
         name: 'home',
         data(){
             return {
-
             }
         },
         components: {

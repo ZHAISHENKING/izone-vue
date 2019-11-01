@@ -6,7 +6,7 @@ import Setting from '../containers/Setting'
 import HomePage from '../containers/HomePage'
 import Login from '../components/Login'
 import PicCategory from '../containers/picManage/PicCategory'
-
+import Chat from '../components/Chat'
 
 const routers = [
     {path: '/', name:'home', component: HomePage,
@@ -16,6 +16,7 @@ const routers = [
             {path: 'center', name: 'center', component: Center},
             {path: 'setting', name: 'setting', component: Setting},
             {path: 'pic/cate/:id', component: PicCategory, name:'pic_cate'},
+            {path: 'chat', name: 'chat', component: Chat},
         ]
     },
     {path: '/login', name: 'login', component: Login},

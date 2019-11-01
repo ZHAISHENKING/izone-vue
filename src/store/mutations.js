@@ -3,6 +3,8 @@ import {
     INIT_PIC_LIST,
     SET_PIC_LIST,
     CATE_LIST,
+    ADD_TO_MESSAGES,
+    CLEAN_MESSAGES
 } from "./mutations-type";
 
 export default {
@@ -21,5 +23,11 @@ export default {
         state.cateList = list
         setStore('cateList', state.cateList)
     },
+    [ADD_TO_MESSAGES] (state, msg) {
+        state.messages.push(msg)
+    },
+    [CLEAN_MESSAGES] (state) {
+        state.messages = []
+    }
 
 }

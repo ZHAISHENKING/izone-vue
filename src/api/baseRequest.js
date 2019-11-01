@@ -15,6 +15,7 @@ export function baseRequest(method, path, params, success, error) {
     let req = null;
     let paramsObj = { params: params };
     axios.defaults.baseURL = baseUrl;
+    axios.defaults.withCredentials = true
     if (method === 'GET') {
         req =  axios.get(path, paramsObj);
     }

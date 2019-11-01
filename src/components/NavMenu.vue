@@ -19,6 +19,7 @@
                 </div>
             </div>
             <DropdownMenu slot="list">
+                <DropdownItem name="chat">聊天室</DropdownItem>
                 <DropdownItem name="cover">更换头像</DropdownItem>
                 <DropdownItem name="logout">退出登录</DropdownItem>
             </DropdownMenu>
@@ -63,6 +64,9 @@
         methods:{
             handleChange(name){
                 switch(name){
+                    case 'chat':
+                        this.$router.push('/chat');
+                        break;
                     case 'cover':
                         this.show = !this.show;
                         break;
