@@ -1,21 +1,22 @@
 <template>
-    <Form :model="formItem" :label-width="100" :rules="ruleInline">
-        <FormItem label="相册名称：" prop="title">
-            <i-input v-model="formItem.title"></i-input>
-        </FormItem>
-        <FormItem label="相册描述：" prop="desc">
-            <i-input type="textarea" v-model="formItem.desc" placeholder="说说这个相册的故事... (非必填)" :autosize="{minRows: 2,maxRows: 5}"></i-input>
-        </FormItem>
-        <FormItem label="相册分类：" style="width:300px;" prop="cate">
-            <i-select v-model="formItem.cate">
-                <Option v-for="cate in cates" :label="cate" :key="cate" :value="cate"></Option>
-            </i-select>
-        </FormItem>
-        <FormItem>
-            <Button type="primary" @click="submit">确定</Button>
-            <Button style="margin-left: 8px" @click="handleCancel">取消</Button>
-        </FormItem>
-    </Form>
+  <Form :model="formItem" :label-width="100" :rules="ruleInline">
+    <FormItem label="相册名称：" prop="title">
+      <i-input v-model="formItem.title"></i-input>
+    </FormItem>
+    <FormItem label="相册描述：" prop="desc">
+      <i-input type="textarea" v-model="formItem.desc" placeholder="说说这个相册的故事... (非必填)"
+               :autosize="{minRows: 2,maxRows: 5}"></i-input>
+    </FormItem>
+    <FormItem label="相册分类：" style="width:300px;" prop="cate">
+      <i-select v-model="formItem.cate">
+        <Option v-for="cate in cates" :label="cate" :key="cate" :value="cate"></Option>
+      </i-select>
+    </FormItem>
+    <FormItem>
+      <Button type="primary" @click="submit">确定</Button>
+      <Button style="margin-left: 8px" @click="handleCancel">取消</Button>
+    </FormItem>
+  </Form>
 </template>
 
 <script>
@@ -24,7 +25,7 @@
 
     export default {
         name: 'create_album',
-        data(){
+        data() {
             return {
                 cates: ['最爱', '风景', '人物', '动物', '游记', '卡通', '生活', '其他'],
                 formItem: {
@@ -34,15 +35,15 @@
                 },
                 ruleInline: {
                     title: [
-                        { required: true, message: '请输入相册名称', trigger: 'blur' }
+                        {required: true, message: '请输入相册名称', trigger: 'blur'}
                     ],
 
                 }
             }
         },
-        methods:{
+        methods: {
             ...mapActions(['GET_CATE']),
-            submit(){
+            submit() {
                 create_album(
                     {...this.formItem},
                     () => {
@@ -52,7 +53,7 @@
                     }
                 )
             },
-            handleCancel(){
+            handleCancel() {
                 window.console.log('aaa')
                 this.$emit('close')
             }

@@ -9,13 +9,14 @@ import PicCategory from '../containers/picManage/PicCategory'
 import Chat from '../components/Chat'
 
 const routers = [
-    {path: '/', name:'home', component: HomePage,
-        children:[
-            {path: 'pic', component: Picture, name:'pic'},
+    {
+        path: '/', name: 'home', component: HomePage,
+        children: [
+            {path: 'pic', component: Picture, name: 'pic'},
             {path: 'video', name: 'video', component: Video},
             {path: 'center', name: 'center', component: Center},
             {path: 'setting', name: 'setting', component: Setting},
-            {path: 'pic/cate/:id', component: PicCategory, name:'pic_cate'},
+            {path: 'pic/cate/:id', component: PicCategory, name: 'pic_cate'},
             {path: 'chat', name: 'chat', component: Chat},
         ]
     },

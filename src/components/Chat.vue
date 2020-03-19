@@ -1,17 +1,17 @@
 <template>
-    <div>
-        <Modal title="聊天室" v-model="modal">
-            <List style="min-height:400px">
-                <ListItem v-for="(item, index) in messages" :key="index">
-                    {{item.name}}: {{item.msg}}
-                </ListItem>
-            </List>
-            <div slot="footer">
-                <i-input v-model="message" placeholder="随便说点什么..." style="width:50%"></i-input>
-                <Button @click="sendMessage">发送</Button>
-            </div>
-        </Modal>
-    </div>
+  <div>
+    <Modal title="聊天室" v-model="modal">
+      <List style="min-height:400px">
+        <ListItem v-for="(item, index) in messages" :key="index">
+          {{item.name}}: {{item.msg}}
+        </ListItem>
+      </List>
+      <div slot="footer">
+        <i-input v-model="message" placeholder="随便说点什么..." style="width:50%"></i-input>
+        <Button @click="sendMessage">发送</Button>
+      </div>
+    </Modal>
+  </div>
 </template>
 
 <script>
@@ -21,7 +21,7 @@
 
     export default {
         name: 'chat',
-        data(){
+        data() {
             const name = store2.get('name')
             return {
                 modal: true,
@@ -42,9 +42,9 @@
         //         this.SAVE_MESSAGE(msg)
         //     }
         // },
-        methods:{
+        methods: {
             ...mapActions(['SAVE_MESSAGE']),
-            sendMessage(){
+            sendMessage() {
                 this.$socket.emit('message', {name: this.name, msg: this.message})
                 this.message = ""
             }

@@ -1,6 +1,8 @@
 /**
  * 获取随机字符串
-*/
+ * @param len
+ * @returns {string}
+ */
 export const getRandomStr = (len = 32) => {
     const $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     const maxPos = $chars.length;
@@ -13,6 +15,8 @@ export const getRandomStr = (len = 32) => {
 
 /**
  * 存储localStorage
+ * @param name
+ * @param content
  */
 export const setStore = (name, content) => {
     if (!name) return;
@@ -24,6 +28,8 @@ export const setStore = (name, content) => {
 
 /**
  * 获取localStorage
+ * @param name
+ * @returns {string}
  */
 export const getStore = name => {
     if (!name) return;
@@ -32,6 +38,7 @@ export const getStore = name => {
 
 /**
  * 删除localStorage
+ * @param name
  */
 export const removeStore = name => {
     if (!name) return;
