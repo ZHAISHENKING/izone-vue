@@ -14,9 +14,9 @@
               <Icon type="ios-lock-outline" slot="prepend"></Icon>
             </i-input>
           </FormItem>
-          <a @click="reg=true">没有账号？ 去注册</a>
+          <a @click="reg=true">gun</a>
           <FormItem>
-            <Button style="width:100%" @click="handleSubmit('formInline')">登录</Button>
+            <Button style="width:100%" @click="handleSubmit('formInline')">登</Button>
           </FormItem>
         </Form>
         <Form v-else ref="regForm" :model="regForm" :rules="regRule">
@@ -25,12 +25,13 @@
               <Icon type="ios-person-outline" slot="prepend"></Icon>
             </i-input>
           </FormItem>
-          <FormItem prop="password">
+          <FormItem pro="password">
             <i-input type="password" v-model="regForm.password" placeholder="请输入密码">
               <Icon type="ios-lock-outline" slot="prepend"></Icon>
             </i-input>
           </FormItem>
           <FormItem prop="repeat">
+
             <i-input type="password" v-model="regForm.repeat" placeholder="再次输入密码">
               <Icon type="ios-lock-outline" slot="prepend"></Icon>
             </i-input>
